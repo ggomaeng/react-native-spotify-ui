@@ -61,6 +61,7 @@ export default class Footer extends Component {
         }]);
         this._panResponder = PanResponder.create({
             onStartShouldSetPanResponder: () => true,
+            onMoveShouldSetPanResponder: (e, g) => !(g.dx === 0 || g.dy === 0),
             onPanResponderTerminationRequest: () => false,
             onStartShouldSetPanResponderCapture: () => false,
             onMoveShouldSetPanResponderCapture: () => false,
@@ -80,14 +81,20 @@ export default class Footer extends Component {
                     this.hideTabBarNavigation(g.dy);
                 }
 
-                if(!this.open && g.dy < -1) {
-                    this.state.opacity.setValue(g.dy/70 + 1);
+                if(!this.open && g.dy < 0) {
+                    const value = g.dy/70 + 1;
+                    if (0 < value && value < 1) {
+                        this.state.opacity.setValue(value);
+                    }
+
                 }
 
-                if(this.open && g.dy > 5) {
-                    this.state.opacity.setValue(g.dy / 250 - 1);
+                if(this.open && g.dy > 0) {
+                    const value = g.dy / 250 - 1;
+                    if (0 < value && value < 1) {
+                        this.state.opacity.setValue(value);
+                    }
                 }
-
 
                 return panMover(e,g);
             },
@@ -100,7 +107,13 @@ export default class Footer extends Component {
                     // console.log(offsetY);
 
                     if(!this.open) {
-                        this.openPlaying(offsetY);
+                        /*s
+                            If you are swiping up quickly and your finger goes off the screen, the View doesn't always open fully (it stops a few px from the top).
+                            This sort of thing happens because the event system couldn't keep up with the fast swipe, and the last event it gets is from a few milliseconds before it hit the top.
+                            You can fix this by always fully opening the View when its `y` is within some distance from the top.
+                            I think you can just add `if (g.y0 <= 100) this.scrollUp();` in your `onPanResponderRelease`
+                         */
+                        if(g.y0 >= 100) this.openPlaying(offsetY);
                     } else {
                        this.closePlaying(offsetY);
                     }
@@ -117,6 +130,7 @@ export default class Footer extends Component {
             this.moving = true;
             this.props.hide();
             StatusBar.setHidden(true, true);
+            this.state.opacity.setValue(0);
             Animated.timing(
                 this.state.pan.y,
                 {
@@ -182,16 +196,13 @@ export default class Footer extends Component {
         }
     }
 
-    componentWillUnmount() {
-        this.state.pan.x.removeAllListeners();
-        this.state.pan.y.removeAllListeners();
-    }
 
     scrollUp() {
         Animated.spring(
             this.state.opacity,
             {toValue: 0}
         ).start();
+
         this.openPlaying(-101);
     }
 
@@ -218,18 +229,24 @@ export default class Footer extends Component {
     renderDefault() {
         const {opacity} = this.state;
         return (
-            <Animated.View style={[styles.firstView, {opacity}]}>
-                <TouchableOpacity onPress={() => this.scrollUp()} >
-                    <Ionicons name='ios-arrow-up' color='#aeafb3' size={16}/>
-                </TouchableOpacity>
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={styles.title}>Awesome Title · <Text style={styles.author}>Artist ggomaeng</Text></Text>
-                    <View style={{flexDirection: 'row'}}>
-                        <Ionicons color={'#429962'} style={{marginRight: 8, paddingBottom: 10}} name='ios-volume-up' size={16}/><Text style={styles.music}>SUNG'S MACBOOK PRO</Text>
+            <Animated.View style={[styles.firstView, {opacity, height: opacity.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0, FOOTER_HEIGHT + 10]
+            })}]}>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between',
+                    alignItems: 'center', padding: 16, paddingBottom: 26,}}>
+                    <TouchableOpacity onPress={() => this.scrollUp()} >
+                        <Ionicons name='ios-arrow-up' color='#aeafb3' size={16}/>
+                    </TouchableOpacity>
+                    <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                        <Text style={styles.title}>Awesome Title · <Text style={styles.author}>Artist ggomaeng</Text></Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Ionicons color={'#429962'} style={{marginRight: 8, paddingBottom: 10}} name='ios-volume-up' size={16}/><Text style={styles.music}>SUNG'S MACBOOK PRO</Text>
+                        </View>
                     </View>
-                </View>
-                <View style={styles.pause}>
-                    <Ionicons name='ios-pause' color='white' size={16}/>
+                    <View style={styles.pause}>
+                        <Ionicons name='ios-pause' color='white' size={16}/>
+                    </View>
                 </View>
             </Animated.View>
         )
@@ -266,11 +283,7 @@ const styles = StyleSheet.create({
         paddingBottom: FOOTER_HEIGHT,
     },
     firstView: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 16,
-        paddingBottom: 26,
+
         position: 'absolute',
         top: 0,
         height: FOOTER_HEIGHT + 10,

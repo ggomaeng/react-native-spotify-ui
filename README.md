@@ -11,7 +11,11 @@ there are so many bugs to combinate pan-responder with other components. Buttons
   
   Another option: Make the "Header" of that slide-up View the "handle", so that the user has to start the gesture on that View. This is the way the Spotify app works anyways. You can't swipe down on any part of the scene except the Header.
 
+<b>[FIX]</b> Fixed screen flickering issue width gesture.y0.
+
+
 The design aspect of this demo belong to <b>Spotify</b>. 
+
 
 ###Demo
 ![demo](https://raw.githubusercontent.com/ggomaeng/react-native-spotify-ui/master/demo.gif)
