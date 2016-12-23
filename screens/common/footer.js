@@ -60,8 +60,9 @@ export default class Footer extends Component {
             dy : this.state.pan.y,
         }]);
         this._panResponder = PanResponder.create({
+            onStartShouldSetPanResponder: () => true,
             onPanResponderTerminationRequest: () => false,
-            onStartShouldSetPanResponderCapture: () => true,
+            onStartShouldSetPanResponderCapture: () => false,
             onMoveShouldSetPanResponderCapture: () => false,
 
             onPanResponderGrant: (e, gestureState) => {
@@ -187,26 +188,19 @@ export default class Footer extends Component {
     }
 
     scrollUp() {
-        console.log('move up');
-        this.moving = true;
-        this.props.hide();
-        Animated.timing(
-            this.state.pan.y,
-            {
-                toValue: -D.height + TOGETHER,
-                duration: 200,
-            }
-        ).start(() => {
-            console.log('opened');
-            //hide tab bar
+        Animated.spring(
+            this.state.opacity,
+            {toValue: 0}
+        ).start();
+        this.openPlaying(-101);
+    }
 
-            setTimeout(() => {
-                this.open = true;
-                this.moving = false;
-            }, 200);
-            this.state.pan.setOffset({y: -D.height + TOGETHER});
-            this.state.pan.setValue({y: 0});
-        });
+    scrollDown() {
+        Animated.spring(
+            this.state.opacity,
+            {toValue: 1}
+        ).start();
+        this.closePlaying(101);
     }
 
     reset() {
@@ -251,7 +245,7 @@ export default class Footer extends Component {
                     {...this._panResponder.panHandlers}
                     style={[styles.playing, this.getStyle()]}>
 
-                    <CoverFlow/>
+                    <CoverFlow scrollDown={() => this.scrollDown()}/>
                     {this.renderDefault()}
                 </Animated.View>
 

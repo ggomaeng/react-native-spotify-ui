@@ -4,7 +4,12 @@ I will add more views in the future.
 
 ##Inspiration
 I was always amazed by the amazing Spotify UI, and I decided to challenge myself. THe pulling drawer from the bottom was the hardest challenge--
-there are so many bugs to combinate pan-responder with other components. Buttons do not respond with PanResponder. If anyone knows a fix, please message me! 
+there are so many bugs to combinate pan-responder with other components. Buttons do not respond with PanResponder. If anyone knows a fix, please message me!
+ 
+<b>[FIX]</b> Now buttons are clickable, thanks to Dan Horrigan's recommendation
+- Regarding the buttons in the PanResponder not working: I believe this is because you have `onStartShouldSetPanResponderCapture` returning `true`. I believe this is causing it to capture all touches on the View. Instead you should just have `onStartShouldSetPanResponder` return `true`, which will respect PanResponder's touch bubbling algorithm. The PR is pretty good at handling these conflicts in a predictable way most of the time.
+  
+  Another option: Make the "Header" of that slide-up View the "handle", so that the user has to start the gesture on that View. This is the way the Spotify app works anyways. You can't swipe down on any part of the scene except the Header.
 
 The design aspect of this demo belong to <b>Spotify</b>. 
 

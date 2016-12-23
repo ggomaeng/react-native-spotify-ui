@@ -27,7 +27,9 @@ export default class CoverFlow extends Component {
     renderHeader() {
         return (
             <View style={styles.header}>
-                <Ionicons name='ios-arrow-down' color='white' size={24}/>
+                <TouchableOpacity onPress={() => this.props.scrollDown()}>
+                    <Ionicons name='ios-arrow-down' color='white' size={24}/>
+                </TouchableOpacity>
                 <Text style={styles.playing}>NOW PLAYING</Text>
                 <Ionicons name='ios-list' color='white' size={26}/>
             </View>
@@ -70,7 +72,7 @@ export default class CoverFlow extends Component {
                 <Ionicons name='ios-shuffle' size={24} color='#c2beb3'/>
                 <Ionicons name='ios-skip-backward' size={32} color='white' />
                 <TouchableOpacity
-                    onPress={() => console.log('hello')}
+                    onPress={() => this.setState({play: !play})}
                     style={[styles.playContainer, play ? {paddingLeft: 8} : {}]}>
                     <Ionicons name={play ? 'ios-play' : 'ios-pause'} style={styles.play}/>
                 </TouchableOpacity>
