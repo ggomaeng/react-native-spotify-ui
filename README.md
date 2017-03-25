@@ -17,7 +17,8 @@ there are so many bugs to combinate pan-responder with other components. Buttons
 The design aspect of this demo belong to <b>Spotify</b>. 
 
 
-###Demo
+##Demo
+
 ![demo](https://raw.githubusercontent.com/ggomaeng/react-native-spotify-ui/master/demo.gif)
 
 ## Try it out
