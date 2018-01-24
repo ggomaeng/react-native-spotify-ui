@@ -2,7 +2,7 @@
 Pure javascript prototype of iOS Facebook UI for React Native framework. This demo only includes the landing page. 
 I will add more views in the future.
 
-##Inspiration
+## Inspiration
 I was always amazed by the amazing Spotify UI, and I decided to challenge myself. THe pulling drawer from the bottom was the hardest challenge--
 there are so many bugs to combinate pan-responder with other components. Buttons do not respond with PanResponder. If anyone knows a fix, please message me!
  
@@ -17,7 +17,7 @@ there are so many bugs to combinate pan-responder with other components. Buttons
 The design aspect of this demo belong to <b>Spotify</b>. 
 
 
-##Demo
+## Demo
 
 ![demo](https://raw.githubusercontent.com/ggomaeng/react-native-spotify-ui/master/demo.gif)
 
