@@ -2,6 +2,20 @@
 Pure javascript prototype of iOS Facebook UI for React Native framework. This demo only includes the landing page. 
 I will add more views in the future.
 
+## Sponsored by Spurwing
+
+![img](https://github.com/ggomaeng/public/blob/main/spurwing-cover.png?raw=true)
+
+This repo is sponsored by Spurwing, where their API Makes Adding Scheduling Quick, Reliable and Scalable.
+
+- Scheduling API
+- Enterprise Scheduling API
+- Scheduling API for Business
+- Scheduling and Calendar Management API
+- Booking API
+
+Check them out [here](https://github.com/Spurwing/Appointment-Scheduling-API)!
+
 ## Inspiration
 I was always amazed by the amazing Spotify UI, and I decided to challenge myself. THe pulling drawer from the bottom was the hardest challenge--
 there are so many bugs to combinate pan-responder with other components. Buttons do not respond with PanResponder. If anyone knows a fix, please message me!
